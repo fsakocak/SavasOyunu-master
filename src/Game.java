@@ -9,6 +9,9 @@ public class Game {
         setup();
     }
     
+    
+    
+    jgtjhgjhg
     /**
      * Oyunun başlangıç pozisyonunu almasını sağlayan metod.
      * harita monsterArr değişkenleri tanımlanır.
