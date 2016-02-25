@@ -1,17 +1,26 @@
 public class Game {
-    static final int MAP_SIZE = 9, MONSTER_CNT = 5;
+    static final int MAP_SIZE = 9, MONSTER_CNT = 3,
+                                    YUKARI = 8, 
+                                    ASAGI = 2, 
+                                    SOL = 4, 
+                                    SAG = 6, 
+                                    SOL_UST = 7, 
+                                    SOL_ALT = 1, 
+                                    SAG_UST = 9, 
+                                    SAG_ALT = 3;
+    
+    static int tur = 1;
     static String 
             harita[][],//Konsola çizilen haritanın görsel karakterleri( ----  ||| vb.)
             karakterKonum[][];//Harita üzerindeki karakterlerin koordinatları.
+    
+    static Karakter player, monsterArr[];
     
     //static Karakter monsterArr[];//Random oluşturulan monsterların dizisi
     public static void main(String[] args) {
         setup();
     }
     
-    
-    
-    jgtjhgjhg
     /**
      * Oyunun başlangıç pozisyonunu almasını sağlayan metod.
      * harita monsterArr değişkenleri tanımlanır.
@@ -21,7 +30,30 @@ public class Game {
     {
         harita = new String[(MAP_SIZE*2)+1][(MAP_SIZE*4)+1];
         karakterKonum = new String[MAP_SIZE][MAP_SIZE];
+        player = new Karakter(0, MAP_SIZE/2+1, MAP_SIZE/2+1);
+        monsterArr = new Karakter[tur*MONSTER_CNT];
         
+        for (int i = 0; i < monsterArr.length; i++) {
+            
+            while(true)
+            {
+               int x = (int)Math.random() * MAP_SIZE;
+               int y = (int)Math.random() * MAP_SIZE;
+            
+               int count = 0;
+               
+                if (player.getKonumX() == x || player.getKonumY() == y) {
+                    break;
+                }
+               
+               
+               count++;
+               if(count > i)
+                   break;
+            }
+            
+            monsterArr[i] = new Karakter(i, SOL, SOL);
+        }
         
         karakterKonumStartSetup();
        //monsterArr = new Karakter[MONSTER_CNT];
@@ -79,29 +111,82 @@ public class Game {
      */
     public static void karakterKonumGuncelle()
     {
-        
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                karakterKonum[i][j]
+            }
+        }
     }
     
     private static int[] getNewCoord()
     {
-        return new int[] {1,1};
+        
     }
     
     
-    public static int readNewWay()
+    //Verilen koordinatın koordinatArr sınırları içerisinde olup olmadığını kontrol eder.
+    public static boolean isAvaiblePoint(int oyuncu, int x, int y)
     {
-        System.out.println("Yeni yön :");
-        return 6;
+        
+       
     }
     
+    
+    
+    public static int readNewWay(int yon)
+    {
+       int pX = player.getKonumX(), pY = player.getKonumY();
+       if(yon == YUKARI && isAvaiblePoint(oyuncu, pX, pY - 1))
+                {
+                    kullaniciKonumGuncelle(oyuncu, pX, pY - 1);
+                }
+                else if(yon == ASAGI && isAvaiblePoint(oyuncu, pX, pY + 1))
+                {
+                    kullaniciKonumGuncelle(oyuncu, pX, pY + 1);
+                }
+                else if(yon == SAG && isAvaiblePoint(oyuncu, pX + 1, pY))
+                {
+                    kullaniciKonumGuncelle(oyuncu, pX + 1, pY);
+                }
+                else if(yon == SOL && isAvaiblePoint(oyuncu, pX - 1, pY))
+                {
+                    kullaniciKonumGuncelle(oyuncu, pX - 1, pY);
+                }
+                else{
+                    System.err.println("Yanlış Yön !");
+                    System.out.println("YUKARI :8\tAŞAĞI :2\tSAĞ :6\tSOL :4");
+                    return false;
+                }
+       return true;
+    }
+    
+    /**
+     * Verilen koordinatın harita sınırlarında olup olmadığını kontrol eder
+     * Eğer sınırlar içerisindeyse true döndürür
+     * değilse false döndürür.
+     * @param x
+     * @param y
+     * @return 
+     */
     private boolean checkWall(int x, int y)
     {
-        
+         if(((karakterKonum.length > y && y >= 0) && (karakterKonum[0].length > x && x >= 0)))
+            return true;
+           
+        return false;
     }
     
-    private boolean checkMonster()
+    
+    
+    private boolean checkMonster(int x, int y)
     {
-        
+        for (int i = 0; i < monsterArr.length; i++) 
+        {
+            if ( monsterArr[i].getKonumX() == x && monsterArr[i].getKonumY() == y)
+                return true;
+            
+        }
+      return false; 
     }
     
     

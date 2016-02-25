@@ -3,12 +3,14 @@
  * @author student
  */
 public class Karakter {
+    final int MONSTER_START_HP_DOWN_LIMIT= 20, MONSTER_START_HP_UPPER_LIMIT= 50,
+              MONSTER_START_ATACK_DOWN_LIMIT= 15, MONSTER_START_ATACK_UPPER_LIMIT= 30;
     final boolean isMonster = true;
     
-    int hp, atack, id = 0,konumX,konumY,monster_hp_start = 20
-                                       ,monster_hp_end = 70
-                                        ,monster_atack_start = 15
-                                        ,monster_atack_end = 30;
+    private int hp, atack, id = 0,konumX,konumY,monster_hp_start = 0
+                                       ,monster_hp_end = 0
+                                        ,monster_atack_start = 0
+                                        ,monster_atack_end = 0;
     
     
     /**
@@ -34,6 +36,43 @@ public class Karakter {
             this.atack = random(monster_atack_start,monster_atack_end);
         }
     }
+    
+    /**
+     * id == 0 ise player oluşturur
+     * id !=0 ise random monster oluşturur.
+     * Alınan monster sınırlamalarına göre hp ve atack belirler.
+     * @param id
+     * @param konumX
+     * @param konumY
+     * @param monster_hp_start
+     * @param monster_hp_end
+     * @param monster_atack_start
+     * @param monster_atack_end 
+     */
+    public Karakter(int id, int konumX, int konumY, int tur)
+    {
+        this.id = id;
+        this.konumX = konumX;
+        this.konumY = konumY;
+        this.monster_atack_end = MONSTER_START_ATACK_UPPER_LIMIT*tur;
+        this.monster_atack_start = MONSTER_START_ATACK_DOWN_LIMIT*tur;
+        this.monster_hp_end = MONSTER_START_HP_UPPER_LIMIT*tur;
+        this.monster_hp_start = MONSTER_START_HP_DOWN_LIMIT*tur;
+        
+        if(id == 0)
+        {
+           this.hp = 100;
+           this.atack = 50;
+        } else
+        {
+            this.hp = random(monster_hp_start,monster_hp_end);
+            this.atack = random(monster_atack_start,monster_atack_end);
+        }
+        
+        
+        
+    }
+    
     //---------------------------------------------------------------------
     public void adimAt(int x, int y)
     {
